@@ -2,7 +2,6 @@
   <div class="max-w-6xl mx-auto py-8">
     <h1 class="text-3xl font-bold mb-4 text-center">🚗 Annonces Véhicules</h1>
 
-    <!-- button to go back -->
      <router-link to="/">
       <button class="mb-4 px-4 py-2 bg-blue-500 text-white rounded-lg shadow">
         Retour à l'accueil

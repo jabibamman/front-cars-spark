@@ -23,6 +23,13 @@
               Découvrir les véhicules
             </button>
           </router-link>
+          <router-link to="/title-status">
+            <button
+              class="ml-2 px-6 py-3 bg-blue-500 hover:bg-blue-600 text-white rounded-lg shadow-lg transition duration-200"
+            >
+                Explorer le statuts
+            </button>
+          </router-link>  
         </section>
   
         <section class="mt-16 grid grid-cols-1 md:grid-cols-3 gap-6">
