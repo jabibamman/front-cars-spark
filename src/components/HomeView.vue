@@ -1,81 +1,46 @@
 <template>
-  <div class="max-w-6xl mx-auto py-8">
-    <h1 class="text-3xl font-bold mb-4 text-center">🚗 Annonces Véhicules</h1>
+    <div class="h-screen flex flex-col">
+      <header class="bg-gradient-to-r from-blue-500 to-indigo-500 py-6 shadow-lg">
+        <h1 class="text-white text-center text-4xl font-bold">🚗 Spark Vehicles Explorer</h1>
+      </header>
+  
+      <main class="flex-1 container mx-auto px-4 md:px-0 flex flex-col justify-center items-center">
+        <section class="text-center">
+          <h2 class="text-3xl font-semibold mb-4">Explorez facilement vos données véhicules</h2>
+          <p class="text-lg text-gray-600 mb-8">
+            Une application moderne pour visualiser, filtrer et analyser des annonces de véhicules avec Apache Spark et Scala.
+          </p>
+          <router-link to="/vehicles">
+            <button
+              class="px-6 py-3 bg-blue-500 hover:bg-blue-600 text-white rounded-lg shadow-lg transition duration-200"
+            >
+              Découvrir les véhicules
+            </button>
+          </router-link>
+        </section>
+  
+        <section class="mt-16 grid grid-cols-1 md:grid-cols-3 gap-6">
+          <div class="p-6 border rounded-lg shadow-lg hover:shadow-xl transition duration-300">
+            <h3 class="text-xl font-semibold mb-2">🚀 Rapide</h3>
+            <p class="text-gray-600">Traitement efficace avec Apache Spark.</p>
+          </div>
+          <div class="p-6 border rounded-lg shadow-lg hover:shadow-xl transition duration-300">
+            <h3 class="text-xl font-semibold mb-2">✨ Moderne</h3>
+            <p class="text-gray-600">Interface élégante avec Vue 3 et Windi CSS.</p>
+          </div>
+          <div class="p-6 border rounded-lg shadow-lg hover:shadow-xl transition duration-300">
+            <h3 class="text-xl font-semibold mb-2">📊 Interactif</h3>
+            <p class="text-gray-600">Filtres et graphiques interactifs avec ApexCharts.</p>
+          </div>
+        </section>
+      </main>
+      <Footer />
 
-    <input
-      v-model="search"
-      placeholder="🔍 Rechercher par région, modèle..."
-      class="w-full px-4 py-2 rounded-lg border shadow mb-4"
-    />
-
-    <div class="overflow-auto rounded-lg shadow-lg border">
-      <table class="w-full table-auto">
-        <thead class="bg-gray-100">
-          <tr>
-            <th class="px-4 py-2">Modèle</th>
-            <th class="px-4 py-2">Région</th>
-            <th class="px-4 py-2">Prix ($)</th>
-            <th class="px-4 py-2">Année</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr
-            v-for="vehicle in filteredVehicles"
-            :key="vehicle.id"
-            class="hover:bg-gray-50 transition duration-200"
-          >
-            <td class="px-4 py-2">{{ vehicle.model || 'Non précisé' }}</td>
-            <td class="px-4 py-2">{{ vehicle.region }}</td>
-            <td class="px-4 py-2">{{ vehicle.price || 'N/A' }}</td>
-            <td class="px-4 py-2">{{ vehicle.year || 'N/A' }}</td>
-          </tr>
-        </tbody>
-      </table>
     </div>
-
-    <div class="mt-8">
-      <apexchart
-        type="bar"
-        height="350"
-        :options="chartOptions"
-        :series="series"
-      />
-    </div>
-  </div>
-</template>
-
-<script setup lang="ts">
-import { ref, computed, onMounted } from 'vue'
-import axios from 'axios'
-import VueApexCharts from 'vue3-apexcharts'
-
-const search = ref('')
-const vehicles = ref<any[]>([])
-
-onMounted(async () => {
-  const res = await axios.get('http://localhost:8080/vehicles')
-  vehicles.value = res.data
-})
-
-const filteredVehicles = computed(() =>
-  vehicles.value.filter(
-    (v) =>
-      v.region?.toLowerCase().includes(search.value.toLowerCase()) ||
-      v.model?.toLowerCase().includes(search.value.toLowerCase())
-  )
-)
-
-const chartOptions = computed(() => ({
-  chart: { id: 'prix-region' },
-  xaxis: {
-    categories: filteredVehicles.value.map((v) => v.region),
-  },
-}))
-
-const series = computed(() => [
-  {
-    name: 'Prix ($)',
-    data: filteredVehicles.value.map((v) => v.price || 0),
-  },
-])
-</script>
+  </template>
+  
+  <script setup lang="ts">
+import Footer from './Footer.vue'
+  import { RouterLink } from 'vue-router'
+  </script>
+  
