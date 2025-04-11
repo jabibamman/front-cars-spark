@@ -5,6 +5,12 @@
       </header>
   
       <main class="flex-1 container mx-auto px-4 md:px-0 flex flex-col justify-center items-center">
+        <img
+            src="/background.png"
+            alt="background"
+            class="absolute inset-0 w-full h-full object-cover opacity-10 blur-sm pointer-events-none"
+        />
+
         <section class="text-center">
           <h2 class="text-3xl font-semibold mb-4">Explorez facilement vos données véhicules</h2>
           <p class="text-lg text-gray-600 mb-8">
