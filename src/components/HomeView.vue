@@ -1,15 +1,22 @@
 <template>
     <div class="h-screen flex flex-col">
-      <header class="bg-gradient-to-r from-blue-500 to-indigo-500 py-6 shadow-lg">
-        <h1 class="text-white text-center text-4xl font-bold">🚗 Spark Vehicles Explorer</h1>
+        <header class="py-6 shadow-none flex justify-center items-center bg-transparent">
+            <img
+          src="/logo-text.png"
+          alt="logo"
+          class="h-20 md:h-28 object-contain"
+        />
       </header>
   
+
       <main class="flex-1 container mx-auto px-4 md:px-0 flex flex-col justify-center items-center">
         <img
             src="/background.png"
             alt="background"
             class="absolute inset-0 w-full h-full object-cover opacity-10 blur-sm pointer-events-none"
         />
+
+
 
         <section class="text-center">
           <h2 class="text-3xl font-semibold mb-4">Explorez facilement vos données véhicules</h2>
