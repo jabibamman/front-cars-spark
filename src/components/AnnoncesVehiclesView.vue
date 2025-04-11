@@ -1,7 +1,7 @@
 <template>
   <div class="max-w-6xl mx-auto py-8">
     <h1 class="text-3xl font-bold mb-4 text-center">🚗 Annonces Véhicules</h1>
-    
+
     <router-link to="/">
       <button class="mb-4 px-4 py-2 bg-blue-500 text-white rounded-lg shadow">
         Retour à l'accueil
@@ -14,7 +14,7 @@
       class="w-full px-4 py-2 rounded-lg border shadow mb-4"
     />
 
-    <div class="mb-4 flex justify-between items-center">
+    <div class="mb-4 flex flex-wrap justify-between items-center gap-4">
       <button
         @click="prevPage"
         class="px-4 py-2 bg-gray-200 rounded disabled:opacity-50"
@@ -22,7 +22,25 @@
       >
         Précédent
       </button>
-      <span>Page {{ currentPage }}</span>
+
+      <span>Page actuelle : {{ currentPage }}</span>
+
+      <div class="flex items-center gap-2">
+        <input
+          v-model="gotoPageInput"
+          type="number"
+          min="1"
+          placeholder="N° de page"
+          class="w-24 px-2 py-1 border rounded"
+        />
+        <button
+          @click="goToPage"
+          class="px-3 py-1 bg-blue-500 text-white rounded"
+        >
+          Aller à la page
+        </button>
+      </div>
+
       <button @click="nextPage" class="px-4 py-2 bg-gray-200 rounded">
         Suivant
       </button>
@@ -31,52 +49,52 @@
     <div class="overflow-auto rounded-lg shadow-lg border">
       <table class="w-full table-auto">
         <thead class="bg-gray-100">
-      <tr>
-        <th class="px-4 py-2">Photo</th>
-        <th class="px-4 py-2">Modèle</th>
-        <th class="px-4 py-2">Année</th>
-        <th class="px-4 py-2">Prix ($)</th>
-        <th class="px-4 py-2">Région</th>
-        <th class="px-4 py-2">KM</th>
-        <th class="px-4 py-2">Énergie</th>
-        <th class="px-4 py-2">Détail</th>
-        <th class="px-4 py-2">Lien</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr
-        v-for="vehicle in filteredVehicles"
-        :key="vehicle.id"
-        class="hover:bg-gray-50 transition duration-200"
-      >
-        <td class="px-4 py-2">
-          <img
-            :src="vehicle.image_url"
-            alt="photo véhicule"
-            class="w-20 h-16 object-cover rounded"
-            v-if="vehicle.image_url"
-          />
-        </td>
-        <td class="px-4 py-2 font-semibold">{{ vehicle.model || 'Non précisé' }}</td>
-        <td class="px-4 py-2">{{ vehicle.year || 'N/A' }}</td>
-        <td class="px-4 py-2">{{ vehicle.price || 'N/A' }}</td>
-        <td class="px-4 py-2">{{ vehicle.region }}</td>
-        <td class="px-4 py-2">{{ vehicle.odometer || 'N/A' }}</td>
-        <td class="px-4 py-2">{{ vehicle.fuel || 'N/A' }}</td>
-        <td class="px-4 py-2">
-          {{ vehicle.description?.slice(0, 50) || '...' }}{{ vehicle.description?.length > 50 ? '…' : '' }}
-        </td>
-        <td class="px-4 py-2">
-          <a
-            :href="vehicle.url"
-            class="text-blue-500 underline"
-            target="_blank"
-            rel="noopener noreferrer"
-          >Voir</a>
-        </td>
-      </tr>
-    </tbody>
-  </table>
+          <tr>
+            <th class="px-4 py-2">Photo</th>
+            <th class="px-4 py-2">Modèle</th>
+            <th class="px-4 py-2">Année</th>
+            <th class="px-4 py-2">Prix ($)</th>
+            <th class="px-4 py-2">Région</th>
+            <th class="px-4 py-2">KM</th>
+            <th class="px-4 py-2">Énergie</th>
+            <th class="px-4 py-2">Détail</th>
+            <th class="px-4 py-2">Lien</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr
+            v-for="vehicle in filteredVehicles"
+            :key="vehicle.id"
+            class="hover:bg-gray-50 transition duration-200"
+          >
+            <td class="px-4 py-2">
+              <img
+                :src="vehicle.image_url"
+                alt="photo véhicule"
+                class="w-20 h-16 object-cover rounded"
+                v-if="vehicle.image_url"
+              />
+            </td>
+            <td class="px-4 py-2 font-semibold">{{ vehicle.model || 'Non précisé' }}</td>
+            <td class="px-4 py-2">{{ vehicle.year || 'N/A' }}</td>
+            <td class="px-4 py-2">{{ vehicle.price || 'N/A' }}</td>
+            <td class="px-4 py-2">{{ vehicle.region }}</td>
+            <td class="px-4 py-2">{{ vehicle.odometer || 'N/A' }}</td>
+            <td class="px-4 py-2">{{ vehicle.fuel || 'N/A' }}</td>
+            <td class="px-4 py-2">
+              {{ vehicle.description?.slice(0, 50) || '...' }}{{ vehicle.description?.length > 50 ? '…' : '' }}
+            </td>
+            <td class="px-4 py-2">
+              <a
+                :href="vehicle.url"
+                class="text-blue-500 underline"
+                target="_blank"
+                rel="noopener noreferrer"
+              >Voir</a>
+            </td>
+          </tr>
+        </tbody>
+      </table>
     </div>
 
     <div class="mt-8">
@@ -98,6 +116,7 @@ const search = ref('')
 const vehicles = ref<any[]>([])
 const currentPage = ref(1)
 const limit = ref(50)
+const gotoPageInput = ref('')
 
 async function fetchVehicles() {
   try {
@@ -110,10 +129,7 @@ async function fetchVehicles() {
   }
 }
 
-onMounted(() => {
-  fetchVehicles()
-})
-
+onMounted(fetchVehicles)
 watch([currentPage, limit], fetchVehicles)
 
 const filteredVehicles = computed(() =>
@@ -146,5 +162,14 @@ function prevPage() {
 
 function nextPage() {
   currentPage.value++
+}
+
+function goToPage() {
+  const page = parseInt(gotoPageInput.value)
+  if (!isNaN(page) && page > 0) {
+    currentPage.value = page
+  } else {
+    alert('Merci d’entrer un numéro de page valide 😅')
+  }
 }
 </script>
